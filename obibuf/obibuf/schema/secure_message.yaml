@@ -1,0 +1,51 @@
+# OBI Buffer Protocol - Secure Message Schema
+# Schema-driven validation with Zero Trust enforcement
+
+message_type: SecureMessage
+version: "1.0"
+compliance: "NASA-STD-8739.8"
+
+fields:
+  - name: id
+    type: uint64
+    required: true
+    validation: "non_zero"
+    
+  - name: timestamp
+    type: uint64
+    required: true
+    validation: "unix_timestamp"
+    
+  - name: payload
+    type: binary
+    required: true
+    max_length: 4096
+    validation: "base64_encoded"
+    
+  - name: signature
+    type: sha256_digest
+    required: true
+    validation: "hex_32_bytes"
+    
+  - name: message_type
+    type: string
+    required: true
+    allowed_values: ["DATA", "CONTROL", "AUDIT"]
+    
+  - name: source_id
+    type: string
+    required: true
+    max_length: 256
+    validation: "canonical_identifier"
+
+# Normalization rules (USCN)
+normalization:
+  case_sensitivity: false
+  encoding: "utf8_canonical"
+  whitespace: "normalized"
+  
+# Audit requirements
+audit:
+  required: true
+  hash_algorithm: "sha256"
+  include_fields: ["id", "timestamp", "message_type", "source_id"]
