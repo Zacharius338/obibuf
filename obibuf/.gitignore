@@ -1,0 +1,23 @@
+# Build directories
+build/
+*.build/
+
+# Compiled objects
+*.o
+*.so
+*.a
+
+# Executables
+obibuf_cli
+test_*
+
+# Logs
+*.log
+audit.log
+
+# IDE files
+.vscode/
+.idea/
+
+# Backup files
+*.backup
